@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Journey Tracker</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Inter font family -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117; /* Dark background */
+            color: #c9d1d9; /* Light text */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+        .counter-card {
+            background-color: #161b22; /* Slightly lighter dark card */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-width: 90%;
+            width: 500px;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            border: 1px solid #30363d;
+            animation: fadeIn 1s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .counter-unit {
+            /* Mobile first: full width, then 1/3 on medium screens */
+            width: 100%; 
+            margin-bottom: 1rem; 
+        }
+        @media (min-width: 640px) {
+            .counter-unit {
+                width: calc(33.333% - 1rem); /* 3 items per row on wider screens */
+                margin-bottom: 0;
+            }
+        }
+        .pulse-heart {
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="counter-card">
+        <!-- Header Section -->
+        <div class="text-center mb-8">
+            <svg class="w-12 h-12 text-pink-500 mx-auto pulse-heart" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path>
+            </svg>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-white mt-3">Our Love Journey</h1>
+            <p class="text-sm text-gray-400 mt-1">Celebrating every moment since Feb 25, 2025</p>
+        </div>
+
+        <!-- Counter Grid (Responsive) -->
+        <div id="counterDisplay" class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+            
+            <!-- Dynamic Counter Units will be inserted here by JavaScript -->
+            <div id="years" class="counter-unit bg-gray-800 p-4 rounded-xl shadow-lg transition duration-300 hover:scale-[1.02]">
+                <div class="text-3xl font-bold text-pink-400" data-value="0">0</div>
+                <div class="text-xs uppercase text-gray-400 tracking-wider mt-1">Years</div>
+            </div>
+            <div id="months" class="counter-unit bg-gray-800 p-4 rounded-xl shadow-lg transition duration-300 hover:scale-[1.02]">
+                <div class="text-3xl font-bold text-pink-400" data-value="0">0</div>
+                <div class="text-xs uppercase text-gray-400 tracking-wider mt-1">Months</div>
+            </div>
+            <div id="days" class="counter-unit bg-gray-800 p-4 rounded-xl shadow-lg transition duration-300 hover:scale-[1.02]">
+                <div class="text-3xl font-bold text-pink-400" data-value="0">0</div>
+                <div class="text-xs uppercase text-gray-400 tracking-wider mt-1">Days</div>
+            </div>
+            
+            <div id="hours" class="counter-unit bg-gray-800 p-4 rounded-xl shadow-lg transition duration-300 hover:scale-[1.02] sm:col-span-1">
+                <div class="text-3xl font-bold text-teal-400" data-value="0">0</div>
+                <div class="text-xs uppercase text-gray-400 tracking-wider mt-1">Hours</div>
+            </div>
+            <div id="minutes" class="counter-unit bg-gray-800 p-4 rounded-xl shadow-lg transition duration-300 hover:scale-[1.02] sm:col-span-1">
+                <div class="text-3xl font-bold text-teal-400" data-value="0">0</div>
+                <div class="text-xs uppercase text-gray-400 tracking-wider mt-1">Minutes</div>
+            </div>
+            <div id="seconds" class="counter-unit bg-gray-800 p-4 rounded-xl shadow-lg transition duration-300 hover:scale-[1.02] sm:col-span-1">
+                <div class="text-3xl font-bold text-teal-400" data-value="0">0</div>
+                <div class="text-xs uppercase text-gray-400 tracking-wider mt-1">Seconds</div>
+            </div>
+        </div>
+
+        <!-- Footer / Professional Adding -->
+        <div class="mt-8 pt-4 border-t border-gray-700 text-center">
+            <p class="text-xs text-gray-500 font-medium tracking-wide">
+                Time is the measure of our growth. Every second counts.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // The exact date and time your relationship started: 25 February, 2025
+        // Setting the time to midnight UTC for consistent calculation.
+        const START_DATE = new Date('2025-02-25T00:00:00Z');
+        
+        // Define element references
+        const elements = {
+            years: document.querySelector('#years div:first-child'),
+            months: document.querySelector('#months div:first-child'),
+            days: document.querySelector('#days div:first-child'),
+            hours: document.querySelector('#hours div:first-child'),
+            minutes: document.querySelector('#minutes div:first-child'),
+            seconds: document.querySelector('#seconds div:first-child'),
+        };
+
+        /**
+         * Pads a number with a leading zero if it's less than 10.
+         * @param {number} n - The number to pad.
+         * @returns {string} The padded number string.
+         */
+        function pad(n) {
+            return n < 10 ? '0' + n : n.toString();
+        }
+
+        /**
+         * Calculates the precise time elapsed since the start date and updates the DOM.
+         */
+        function updateCounter() {
+            const now = new Date();
+            const msDiff = now - START_DATE;
+
+            // Check if the start date is in the future.
+            if (msDiff < 0) {
+                // If the start date is in the future, display placeholders or a waiting message
+                Object.values(elements).forEach(el => el.textContent = '00');
+                if (elements.years.textContent !== 'Waiting...') {
+                     elements.years.textContent = 'Waiting...';
+                     elements.months.textContent = 'Waiting...';
+                     elements.days.textContent = 'Waiting...';
+                     elements.hours.textContent = '00';
+                     elements.minutes.textContent = '00';
+                     elements.seconds.textContent = '00';
+                }
+                return;
+            }
+
+            // --- 1. Calculate time components (Hours, Minutes, Seconds) ---
+            // Calculate total seconds elapsed
+            let totalSeconds = Math.floor(msDiff / 1000);
+
+            const s = totalSeconds % 60;
+            let totalMinutes = Math.floor(totalSeconds / 60);
+            const m = totalMinutes % 60;
+            let totalHours = Math.floor(totalMinutes / 60);
+            const h = totalHours % 24;
+            let totalDays = Math.floor(totalHours / 24); // Total days passed
+
+            // --- 2. Calculate Date components (Years, Months, Days) ---
+            // This requires using Date objects for accurate month/year boundaries
+            
+            let dateDiff = START_DATE;
+            let years = 0;
+            let months = 0;
+            let days = 0;
+
+            // Calculate Years
+            while (dateDiff < now) {
+                // Try advancing one year
+                const nextYear = new Date(START_DATE.getFullYear() + years + 1, START_DATE.getMonth(), START_DATE.getDate());
+                if (nextYear <= now) {
+                    years++;
+                    dateDiff = nextYear;
+                } else {
+                    break;
+                }
+            }
+
+            // Calculate Months remaining
+            while (dateDiff < now) {
+                // Try advancing one month
+                const currentMonth = dateDiff.getMonth();
+                const currentYear = dateDiff.getFullYear();
+                let nextMonth = currentMonth + 1;
+                let nextYear = currentYear;
+
+                if (nextMonth > 11) {
+                    nextMonth = 0; // January
+                    nextYear++;
+                }
+
+                // Create the next date, handling end-of-month issues
+                const nextDate = new Date(nextYear, nextMonth, START_DATE.getDate());
+
+                // If the start day doesn't exist in the next month (e.g., Feb 30), it rolls over. 
+                // We use this check to ensure we only count the month if the date is actually passed.
+                if (nextDate.getMonth() !== nextMonth) {
+                    // This happens if we try to set day 31 in April. We move to the first day of the next month.
+                    // Instead of using the START_DATE day, we calculate the last day of the current month.
+                    // For simplicity and accuracy here, we compare the current date (dateDiff) with now
+                    // based on simply checking if the next month is fully passed.
+                    
+                    // Simple check: If advancing 30 days is still before now, count it as a month.
+                    // But to be precise: check if the first of the next month has passed.
+                    
+                    // For precise month calculation, we use the original day (START_DATE.getDate())
+                    // If the date rolls over (e.g., trying to set Feb 30), we must use the actual date created.
+                    
+                    const testDate = new Date(nextYear, nextMonth, START_DATE.getDate());
+                    
+                    // If the day in the new month is the same as the original, use it. Otherwise, use the last day of that month.
+                    if (testDate.getDate() !== START_DATE.getDate() && nextMonth > currentMonth) {
+                       // The month date rolled over (e.g. Feb 30 -> Mar 2), we need to handle this complex case.
+                       // Since this is hard to implement cleanly in pure JS date math without a library,
+                       // we'll use a simpler, reliable approach for years/months/days difference:
+                        
+                        // Fallback to simple day difference calculation for days/months if month logic is tricky:
+                        // Total days calculation is always correct:
+                        if (nextDate <= now) {
+                            months++;
+                            dateDiff = nextDate;
+                        } else {
+                            break;
+                        }
+                        
+                    } else if (nextDate <= now) {
+                        months++;
+                        dateDiff = nextDate;
+                    } else {
+                        break;
+                    }
+                } else if (nextDate <= now) {
+                    months++;
+                    dateDiff = nextDate;
+                } else {
+                    break;
+                }
+            }
+            
+            // Calculate remaining days
+            const dayMs = 1000 * 60 * 60 * 24;
+            // The remaining time in milliseconds from the last date boundary (years/months calculated)
+            const remainingTimeMs = now - dateDiff;
+            days = Math.floor(remainingTimeMs / dayMs);
+
+
+            // --- 3. Update the Display ---
+
+            elements.years.textContent = pad(years);
+            elements.months.textContent = pad(months);
+            elements.days.textContent = pad(days);
+            
+            // Hours, Minutes, Seconds are always correct since they are calculated from total seconds.
+            elements.hours.textContent = pad(h);
+            elements.minutes.textContent = pad(m);
+            elements.seconds.textContent = pad(s);
+        }
+
+        // Start the counter and set the interval
+        window.onload = function() {
+            // Initial call to prevent flicker
+            updateCounter(); 
+            // Update every 1000 milliseconds (1 second)
+            setInterval(updateCounter, 1000); 
+        };
+    </script>
+
+</body>
+</html>
+
