@@ -384,7 +384,7 @@
             }
 
             loginButton.disabled = true;
-            loginButton.textContent = "Unlocking...";
+            loginButton.textContent = "Verifying....";
 
             loginMessage.textContent =
                 "Checking your access...";
@@ -401,13 +401,13 @@
             if (error) {
 
                 loginMessage.textContent =
-                    "Incorrect email or password.";
+                    "Incorrect UserID or Password.";
 
                 loginMessage.className =
                     "text-xs text-center mt-3 text-red-400";
 
                 loginButton.disabled = false;
-                loginButton.textContent = "Unlock Memories";
+                loginButton.textContent = "Login";
 
                 return;
             }
@@ -417,7 +417,7 @@
             }
 
             loginButton.disabled = false;
-            loginButton.textContent = "Unlock Memories";
+            loginButton.textContent = "Login";
         }
 
         async function logout() {
