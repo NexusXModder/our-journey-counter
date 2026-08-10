@@ -103,7 +103,6 @@
 
         </div>
 
-
         <div
             id="counterDisplay"
             class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center"
@@ -122,7 +121,6 @@
                 </div>
             </div>
 
-
             <div
                 id="months"
                 class="counter-unit bg-gray-800 p-4 rounded-xl shadow-lg transition duration-300 hover:scale-[1.02]"
@@ -135,7 +133,6 @@
                     Months
                 </div>
             </div>
-
 
             <div
                 id="days"
@@ -150,7 +147,6 @@
                 </div>
             </div>
 
-
             <div
                 id="hours"
                 class="counter-unit bg-gray-800 p-4 rounded-xl shadow-lg transition duration-300 hover:scale-[1.02]"
@@ -164,7 +160,6 @@
                 </div>
             </div>
 
-
             <div
                 id="minutes"
                 class="counter-unit bg-gray-800 p-4 rounded-xl shadow-lg transition duration-300 hover:scale-[1.02]"
@@ -177,7 +172,6 @@
                     Minutes
                 </div>
             </div>
-
 
             <div
                 id="seconds"
@@ -193,7 +187,6 @@
             </div>
 
         </div>
-
 
         <div class="mt-6 text-center">
 
@@ -212,7 +205,6 @@
             </div>
 
         </div>
-
 
         <div class="mt-8">
 
@@ -236,7 +228,9 @@
                     February 25, 2027
                 </div>
 
-<div class="text-base font-semibold text-gray-300 mt-4 mb-2">Time Left:</div>
+                <div class="text-base font-semibold text-gray-300 mt-4 mb-2">
+                    Time Left:
+                </div>
 
                 <div class="mt-4 grid grid-cols-2 sm:grid-cols-4 gap-3">
 
@@ -253,7 +247,6 @@
                         </div>
                     </div>
 
-
                     <div class="bg-gray-900 rounded-lg p-3">
                         <div
                             id="milestoneHours"
@@ -267,7 +260,6 @@
                         </div>
                     </div>
 
-
                     <div class="bg-gray-900 rounded-lg p-3">
                         <div
                             id="milestoneMinutes"
@@ -280,7 +272,6 @@
                             Minutes
                         </div>
                     </div>
-
 
                     <div class="bg-gray-900 rounded-lg p-3">
                         <div
@@ -299,12 +290,34 @@
 
             </div>
 
-      <div class="mt-6">
-    <a href="memories.html" class="flex items-center justify-center gap-3 p-4 rounded-xl border border-[#30363d] bg-[#161b22] hover:bg-[#21262d] transition-all duration-300 w-full shadow-lg">
-        <span class="text-xl">🔒</span>
-        <span class="text-sm font-semibold text-gray-300 tracking-wider uppercase">Our Memories</span>
-    </a>
-</div>
+        </div>
+
+        <div class="mt-6">
+
+            <a
+                href="memories.html"
+                class="block bg-gray-800 p-5 rounded-xl shadow-lg border border-[#30363d] hover:bg-[#21262d] transition-all duration-300 w-full"
+            >
+
+                <div class="flex items-center justify-center gap-3">
+
+                    <span class="text-xl">
+                        🔒
+                    </span>
+
+                    <span class="text-sm font-semibold text-gray-300 tracking-wider uppercase">
+                        Our Memories
+                    </span>
+
+                </div>
+
+                <div class="text-xs text-gray-500 mt-2 text-center">
+                    Tap to open our memories
+                </div>
+
+            </a>
+
+        </div>
 
         <div class="mt-8 pt-4 border-t border-gray-700 text-center">
 
@@ -315,7 +328,6 @@
         </div>
 
     </div>
-
 
     <script>
 
@@ -443,7 +455,6 @@
             elements.seconds.textContent =
                 pad(duration.seconds);
 
-
             const elapsedMilliseconds =
                 now.getTime() - START_DATE.getTime();
 
@@ -461,7 +472,6 @@
                 Math.floor(
                     elapsedMilliseconds / 86400000
                 );
-
 
             summaryElements.days.textContent =
                 totalDays.toLocaleString() +
