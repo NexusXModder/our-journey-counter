@@ -38,18 +38,22 @@
             position: relative;
         }
 
-        /* Menu Button */
-        .menu-btn {
+        /* Menu Button Container */
+        .menu-container {
             position: absolute;
             top: 20px;
             left: 20px;
+            z-index: 10;
+        }
+
+        /* Menu Button */
+        .menu-btn {
             cursor: pointer;
             width: 22px;
             height: 16px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            z-index: 10;
         }
 
         .menu-btn span {
@@ -63,6 +67,37 @@
 
         .menu-btn:hover span {
             background-color: #f43f5e;
+        }
+
+        /* Tip Bubble positioned directly underneath the 3 lines (Stays until clicked) */
+        .tip-bubble {
+            position: absolute;
+            top: 24px;
+            left: 0;
+            background: #21262d;
+            color: #8b949e;
+            font-size: 0.62rem;
+            font-weight: 500;
+            padding: 3px 7px;
+            border-radius: 5px;
+            border: 1px solid #30363d;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            white-space: nowrap;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        /* Small arrow pointing upwards towards the 3 lines */
+        .tip-bubble::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: 8px;
+            width: 5px;
+            height: 5px;
+            background: #21262d;
+            border-top: 1px solid #30363d;
+            border-left: 1px solid #30363d;
+            transform: rotate(45deg);
         }
 
         /* Slide-out Drawer */
@@ -113,7 +148,6 @@
             color: #f43f5e;
         }
 
-        /* Custom Modern Vector Icons */
         .nav-icon {
             width: 20px;
             height: 20px;
@@ -139,7 +173,7 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -213,10 +247,14 @@
 
     <div class="counter-card">
 
-        <div class="menu-btn" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
+        <!-- Menu Container with 3-Lines and Persistent Tip -->
+        <div class="menu-container" onclick="toggleMenu()">
+            <div class="menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="tip-bubble" id="tipBubble">Tap for features</div>
         </div>
 
         <div class="text-center mb-8">
@@ -455,6 +493,10 @@
             const backdrop = document.getElementById("backdrop");
             drawer.classList.toggle("open");
             backdrop.classList.toggle("active");
+
+            // Removes the tip bubble permanently only when the menu is clicked
+            const bubble = document.getElementById('tipBubble');
+            if (bubble) bubble.remove();
         }
 
         const START_DATE = new Date('2025-02-25T00:00:00+06:00');
