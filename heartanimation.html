@@ -9,8 +9,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
 
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { background-color: #0d1117; color: #c9d1d9; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow-x: hidden; padding: 20px; }
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Inter', sans-serif; 
+            -webkit-user-select: none; 
+            -moz-user-select: none; 
+            -ms-user-select: none; 
+            user-select: none; 
+        }
+        body { 
+            background-color: #0d1117; 
+            color: #c9d1d9; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            overflow-x: hidden; 
+            padding: 20px; 
+            -webkit-touch-callout: none;
+        }
         
         .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 25px; align-items: center; }
         
@@ -49,7 +69,6 @@
             touch-action: none; 
         }
         
-        /* Interactive Light Overlay Effect */
         .holo-card::after { 
             content: ''; 
             position: absolute; 
@@ -106,6 +125,14 @@
     </div>
 
     <script>
+        // Disable Right Click & Inspect Shortcuts
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 's')) {
+                e.preventDefault();
+            }
+        });
+
         // Wave Visualizer Script
         const canvas = document.getElementById('waveCanvas');
         const ctx = canvas.getContext('2d');
@@ -144,13 +171,11 @@
         }
         drawWave();
 
-        // Dynamic slight fluctuating BPM simulation
         setInterval(() => {
             const randomBpm = 72 + Math.floor(Math.random() * 6);
             document.getElementById('bpmVal').textContent = randomBpm + ' BPM';
         }, 3000);
 
-        // 3D Tilt Effect & Dynamic Light Tracking Script
         const card = document.getElementById('tiltCard');
 
         function handleMove(clientX, clientY) {
@@ -170,31 +195,14 @@
             card.style.setProperty('--light-opacity', `1`);
         }
 
-        card.addEventListener('mousemove', (e) => {
-            handleMove(e.clientX, e.clientY);
-        });
-
-        card.addEventListener('mouseenter', () => {
-            card.style.setProperty('--light-opacity', `1`);
-        });
-
-        card.addEventListener('touchmove', (e) => {
-            if(e.touches.length > 0) {
-                handleMove(e.touches[0].clientX, e.touches[0].clientY);
-            }
-        });
-
-        card.addEventListener('touchstart', (e) => {
-            if(e.touches.length > 0) {
-                handleMove(e.touches[0].clientX, e.touches[0].clientY);
-            }
-        });
-
+        card.addEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
+        card.addEventListener('mouseenter', () => card.style.setProperty('--light-opacity', `1`));
+        card.addEventListener('touchmove', (e) => { if(e.touches.length > 0) handleMove(e.touches[0].clientX, e.touches[0].clientY); });
+        card.addEventListener('touchstart', (e) => { if(e.touches.length > 0) handleMove(e.touches[0].clientX, e.touches[0].clientY); });
         card.addEventListener('mouseleave', () => {
             card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
             card.style.setProperty('--light-opacity', `0`);
         });
-
         card.addEventListener('touchend', () => {
             card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
             card.style.setProperty('--light-opacity', `0`);
