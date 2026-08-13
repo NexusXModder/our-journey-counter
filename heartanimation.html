@@ -58,6 +58,39 @@
         
         canvas { width: 100%; height: 90px; background: #0d1117; border-radius: 0.75rem; display: block; border: 1px solid #30363d; box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
 
+        /* Telemetry Row (Ping, FPS, Latency under graph) */
+        .telemetry-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            padding: 0 6px;
+        }
+        .tele-item {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .tele-item.center {
+            align-items: center;
+        }
+        .tele-item.right {
+            align-items: flex-end;
+        }
+        .tele-val {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #8b949e;
+            transition: color 0.4s ease;
+        }
+        .tele-lbl {
+            font-size: 0.6rem;
+            color: #8b949e;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 2px;
+        }
+
         /* Biological Vital Stats Row */
         .vital-row { display: flex; gap: 12px; width: 100%; }
         .vital-box { flex: 1; background: #161b22; border: 1px solid #30363d; padding: 12px 8px; border-radius: 1rem; text-align: center; transition: border-color 0.3s ease; }
@@ -130,6 +163,22 @@
             </h3>
             <div class="status" id="statusText">Status: Standby • Touch card below to initialize link</div>
             <canvas id="waveCanvas"></canvas>
+
+            <!-- Ping, FPS, Latency telemetry metrics under the graph -->
+            <div class="telemetry-row">
+                <div class="tele-item">
+                    <div class="tele-val" id="pingVal">-- ms</div>
+                    <div class="tele-lbl">Ping</div>
+                </div>
+                <div class="tele-item center">
+                    <div class="tele-val" id="fpsVal">-- FPS</div>
+                    <div class="tele-lbl">Framerate</div>
+                </div>
+                <div class="tele-item right">
+                    <div class="tele-val" id="latencyVal">-- ms</div>
+                    <div class="tele-lbl">Latency</div>
+                </div>
+            </div>
         </div>
 
         <!-- Biological Vital Stats Box -->
@@ -223,6 +272,12 @@
         const bpmVal = document.getElementById('bpmVal');
         const resVal = document.getElementById('resVal');
         const freqVal = document.getElementById('freqVal');
+        
+        // New Telemetry Elements
+        const pingVal = document.getElementById('pingVal');
+        const fpsVal = document.getElementById('fpsVal');
+        const latencyVal = document.getElementById('latencyVal');
+
         const cardInstruction = document.getElementById('cardInstruction');
         const box1 = document.getElementById('box1');
         const box2 = document.getElementById('box2');
@@ -238,29 +293,45 @@
             setTimeout(() => {
                 isConnected = true;
                 statusText.style.color = '#5ccfe6';
-                statusText.textContent = 'Status: Bio-Synced • Core Connected (Secure)';
+                statusText.textContent = 'Status: Bio-Synced • Core A Connected to Core B (Secure)';
                 cardInstruction.textContent = 'Fully Synchronized. Move around to experience holographic tilt.';
                 
                 box1.style.borderColor = '#5ccfe6';
                 box2.style.borderColor = '#5ccfe6';
                 box3.style.borderColor = '#5ccfe6';
 
+                // Activate colors for all metrics
                 bpmVal.style.color = '#5ccfe6';
                 resVal.style.color = '#5ccfe6';
                 freqVal.style.color = '#5ccfe6';
+                pingVal.style.color = '#5ccfe6';
+                fpsVal.style.color = '#5ccfe6';
+                latencyVal.style.color = '#5ccfe6';
                 
+                // Initial values
                 bpmVal.textContent = '75 BPM';
                 resVal.textContent = '99.9%';
                 freqVal.textContent = '100 Hz';
+                pingVal.textContent = '18 ms';
+                fpsVal.textContent = '60 FPS';
+                latencyVal.textContent = '12 ms';
 
                 drawActiveWave();
 
+                // Live dynamic fluctuations for all stats together
                 setInterval(() => {
                     if (isConnected) {
                         const randomBpm = 72 + Math.floor(Math.random() * 6);
+                        const randomPing = 16 + Math.floor(Math.random() * 7);
+                        const randomFps = 59 + Math.floor(Math.random() * 3);
+                        const randomLatency = 11 + Math.floor(Math.random() * 4);
+
                         bpmVal.textContent = randomBpm + ' BPM';
+                        pingVal.textContent = randomPing + ' ms';
+                        fpsVal.textContent = randomFps + ' FPS';
+                        latencyVal.textContent = randomLatency + ' ms';
                     }
-                }, 3000);
+                }, 2500);
 
             }, 1800);
         }
