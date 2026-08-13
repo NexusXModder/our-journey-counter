@@ -3,127 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heart Sync Visualizer & Holographic Memory</title>
+    <title>Heartbeat Animation</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #0b0f19; color: #f3f4f6; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow-x: hidden; padding: 20px; }
-        
-        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 30px; align-items: center; }
-        
-        /* Visualizer Box */
-        .visualizer-card { background: rgba(17, 24, 39, 0.7); border: 1px solid rgba(236, 72, 153, 0.2); border-radius: 16px; padding: 25px; width: 100%; text-align: center; backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .visualizer-card h3 { color: #f43f5e; margin-bottom: 5px; font-size: 1.2rem; letter-spacing: 1px; }
-        .status { font-size: 0.85rem; color: #9ca3af; margin-bottom: 15px; }
-        
-        canvas { width: 100%; height: 80px; background: #030712; border-radius: 8px; display: block; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
-        /* 3D Holographic Card */
-        .holo-card-container { perspective: 1000px; width: 100%; display: flex; justify-content: center; }
-        .holo-card { width: 100%; height: 220px; background: linear-gradient(135deg, rgba(244,63,94,0.1), rgba(14,165,233,0.1)); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 30px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; cursor: pointer; transition: transform 0.1s ease, box-shadow 0.3s ease; backdrop-filter: blur(12px); box-shadow: 0 15px 35px rgba(0,0,0,0.4); position: relative; overflow: hidden; touch-action: none; }
-        
-        .holo-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(244,63,94,0.2), transparent 70%); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
-        .holo-card:hover::before, .holo-card:active::before { opacity: 1; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1rem;
+            box-sizing: border-box;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
 
-        .holo-card h4 { font-size: 1.4rem; color: #fff; margin-bottom: 10px; }
-        .holo-card p { color: #d1d5db; font-size: 0.95rem; line-height: 1.4; }
-        .holo-badge { position: absolute; top: 15px; right: 20px; font-size: 0.75rem; background: rgba(244,63,94,0.2); color: #f43f5e; padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(244,63,94,0.4); }
+        .counter-card {
+            background-color: #161b22;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-width: 90%;
+            width: 500px;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            border: 1px solid #30363d;
+            animation: fadeIn 1s ease-out;
+            position: relative;
+        }
+
+        .menu-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            width: 22px;
+            height: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 10;
+        }
+
+        .menu-btn span {
+            display: block;
+            height: 2.5px;
+            width: 100%;
+            background-color: #8b949e;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        .menu-btn:hover span {
+            background-color: #f43f5e;
+        }
+
+        .nav-drawer {
+            height: 100%;
+            width: 280px;
+            position: fixed;
+            z-index: 999;
+            top: 0;
+            left: -280px;
+            background-color: #161b22;
+            border-right: 1px solid #30363d;
+            box-shadow: 5px 0 25px rgba(0, 0, 0, 0.7);
+            transition: left 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            padding-top: 60px;
+        }
+
+        .nav-drawer.open {
+            left: 0;
+        }
+
+        .nav-drawer .drawer-header {
+            padding: 20px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #fff;
+            border-bottom: 1px solid #30363d;
+            margin-bottom: 10px;
+        }
+
+        .nav-drawer a {
+            padding: 15px 20px;
+            color: #c9d1d9;
+            font-size: 1rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .nav-drawer a:hover {
+            background-color: #21262d;
+            color: #f43f5e;
+        }
+
+        .backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            display: none;
+        }
+
+        .backdrop.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pulse-heart {
+            animation: pulse 1.2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
     </style>
 </head>
+
 <body>
 
-    <div class="container">
-        <!-- Frequency Visualizer -->
-        <div class="visualizer-card">
-            <h3>HEART SYNC FREQUENCY</h3>
-            <div class="status">Status: Synced at 100Hz • Secure Channel</div>
-            <canvas id="waveCanvas"></canvas>
+    <div id="backdrop" class="backdrop" onclick="toggleMenu()"></div>
+
+    <div id="navDrawer" class="nav-drawer">
+        <div class="drawer-header">Navigation Tools</div>
+        <a href="index.html">🏠 Home Dashboard</a>
+        <a href="heartanimation.html">💓 Heartbeat Animation</a>
+        <a href="memories.html">🔒 Secure Memories</a>
+    </div>
+
+    <div class="counter-card text-center">
+
+        <div class="menu-btn" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
 
-        <!-- 3D Holographic Tilt Card -->
-        <div class="holo-card-container">
-            <div class="holo-card" id="tiltCard">
-                <span class="holo-badge">Holographic Memory</span>
-                <h4>Our Special Connection</h4>
-                <p>Touch and drag or move your mouse over this card to experience the 3D holographic tilt and light effect!</p>
-            </div>
+        <div class="mb-6 pt-4">
+            <svg
+                class="w-20 h-20 text-pink-500 mx-auto pulse-heart"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    fill-rule="evenodd"
+                    d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                    clip-rule="evenodd"
+                ></path>
+            </svg>
+
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white mt-4">
+                Beating As One
+            </h1>
+
+            <p class="text-sm text-gray-400 mt-2">
+                Every beat echoes our connection.
+            </p>
         </div>
+
+        <div class="bg-gray-800 p-6 rounded-xl shadow-lg border border-[#30363d]">
+            <p class="text-gray-300 text-sm leading-relaxed">
+                "In a world full of temporary things, you are my forever constant."
+            </p>
+        </div>
+
+        <div class="mt-6">
+            <a
+                href="index.html"
+                class="inline-block bg-pink-600 hover:bg-pink-500 text-white font-semibold text-sm px-6 py-3 rounded-xl transition duration-300 shadow-lg"
+            >
+                Back to Dashboard
+            </a>
+        </div>
+
     </div>
 
     <script>
-        // Wave Visualizer Script
-        const canvas = document.getElementById('waveCanvas');
-        const ctx = canvas.getContext('2d');
-        
-        function initCanvas() {
-            canvas.width = canvas.parentElement.clientWidth - 50;
-            canvas.height = 80;
+        function toggleMenu() {
+            const drawer = document.getElementById("navDrawer");
+            const backdrop = document.getElementById("backdrop");
+            drawer.classList.toggle("open");
+            backdrop.classList.toggle("active");
         }
-        window.addEventListener('resize', initCanvas);
-        initCanvas();
-
-        let step = 0;
-        function drawWave() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.beginPath();
-            ctx.lineWidth = 2.5;
-            ctx.strokeStyle = '#f43f5e';
-
-            let sliceWidth = canvas.width / 100;
-            let x = 0;
-
-            for (let i = 0; i < 100; i++) {
-                let v = Math.sin((i + step) * 0.1) * Math.cos((i - step) * 0.05);
-                let y = (canvas.height / 2) + (v * (canvas.height / 3));
-
-                if (i === 0) {
-                    ctx.moveTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
-                }
-                x += sliceWidth;
-            }
-            ctx.stroke();
-            step += 0.08;
-            requestAnimationFrame(drawWave);
-        }
-        drawWave();
-
-        // 3D Tilt Effect Script (Supports both Mouse & Mobile Touch)
-        const card = document.getElementById('tiltCard');
-
-        function handleMove(clientX, clientY) {
-            const rect = card.getBoundingClientRect();
-            const x = clientX - rect.left;
-            const y = clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const rotateX = ((y - centerY) / centerY) * -12;
-            const rotateY = ((x - centerX) / centerX) * 12;
-
-            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-            card.style.setProperty('--mouse-x', `${x}px`);
-            card.style.setProperty('--mouse-y', `${y}px`);
-        }
-
-        card.addEventListener('mousemove', (e) => {
-            handleMove(e.clientX, e.clientY);
-        });
-
-        card.addEventListener('touchmove', (e) => {
-            if(e.touches.length > 0) {
-                handleMove(e.touches[0].clientX, e.touches[0].clientY);
-            }
-        });
-
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
-        });
-
-        card.addEventListener('touchend', () => {
-            card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
-        });
     </script>
+
 </body>
 </html>
