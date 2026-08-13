@@ -10,7 +10,6 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
-        /* Copy & Select Block */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #0d1117;
@@ -36,10 +35,10 @@
             border-radius: 1.5rem;
             border: 1px solid #30363d;
             animation: fadeIn 1s ease-out;
-            position: relative; /* Card er vitor absolute position control korar jonno */
+            position: relative;
         }
 
-        /* Card er vitor top-left konay choto 3-line Menu Button */
+        /* Menu Button */
         .menu-btn {
             position: absolute;
             top: 20px;
@@ -66,7 +65,7 @@
             background-color: #f43f5e;
         }
 
-        /* Slide-out Drawer from Left */
+        /* Slide-out Drawer */
         .nav-drawer {
             height: 100%;
             width: 280px;
@@ -94,17 +93,19 @@
             color: #fff;
             border-bottom: 1px solid #30363d;
             margin-bottom: 10px;
+            font-family: 'Inter', sans-serif;
         }
 
         .nav-drawer a {
-            padding: 15px 20px;
+            padding: 14px 20px;
             color: #c9d1d9;
-            font-size: 1rem;
+            font-size: 0.95krem;
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             transition: background 0.2s, color 0.2s;
+            font-weight: 500;
         }
 
         .nav-drawer a:hover {
@@ -112,7 +113,16 @@
             color: #f43f5e;
         }
 
-        /* Backdrop overlay when drawer is open */
+        /* Custom Modern Vector Icons replacing plain emojis */
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #f43f5e;
+        }
+
         .backdrop {
             position: fixed;
             top: 0;
@@ -158,20 +168,39 @@
 
 <body>
 
-    <!-- Backdrop -->
     <div id="backdrop" class="backdrop" onclick="toggleMenu()"></div>
 
-    <!-- Slide-out Drawer Navigation -->
+    <!-- Slide-out Drawer Navigation with Professional Modern Icons & Quantum Option Added -->
     <div id="navDrawer" class="nav-drawer">
         <div class="drawer-header">Navigation Tools</div>
-        <a href="index.html">🏠 Home Dashboard</a>
-        <a href="heartanimation.html">💓 Heartbeat Animation</a>
-        <a href="memories.html">🔒 Secure Memories</a>
+        <a href="index.html">
+            <span class="nav-icon">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+            </span>
+            Home Dashboard
+        </a>
+        <a href="heartanimation.html">
+            <span class="nav-icon">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+            </span>
+            Heartbeat Animation
+        </a>
+        <a href="quantum.html">
+            <span class="nav-icon">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            </span>
+            Quantum Entanglement
+        </a>
+        <a href="memories.html">
+            <span class="nav-icon">
+                <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+            </span>
+            Secure Memories
+        </a>
     </div>
 
     <div class="counter-card">
 
-        <!-- Carder Vitor Top-Left Konay Menu Button -->
         <div class="menu-btn" onclick="toggleMenu()">
             <span></span>
             <span></span>
