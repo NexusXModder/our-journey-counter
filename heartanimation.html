@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heart Sync Visualizer & Holographic Memory</title>
+    <title>Quantum Heart Sync Visualizer & Holographic Memory</title>
 
     <!-- Google Font: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
@@ -32,41 +32,64 @@
             -webkit-touch-callout: none;
         }
         
-        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 25px; align-items: center; }
+        .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 22px; align-items: center; }
         
         /* Visualizer Box */
-        .visualizer-card { background: #161b22; border: 1px solid #30363d; border-radius: 1.5rem; padding: 25px; width: 100%; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }
-        .visualizer-card h3 { color: #f43f5e; margin-bottom: 5px; font-size: 1.1rem; letter-spacing: 1px; font-weight: 800; }
-        .status { font-size: 0.8rem; color: #8b949e; margin-bottom: 15px; }
+        .visualizer-card { 
+            background: #161b22; 
+            border: 1px solid #30363d; 
+            border-radius: 1.5rem; 
+            padding: 24px; 
+            width: 100%; 
+            text-align: center; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            position: relative; 
+        }
+        .visualizer-card h3 { color: #f43f5e; margin-bottom: 4px; font-size: 1.05rem; letter-spacing: 1px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; }
         
-        canvas { width: 100%; height: 90px; background: #0d1117; border-radius: 0.75rem; display: block; border: 1px solid #30363d; }
+        /* Custom SVG Shimmering Heart */
+        .header-shimmer-heart { width: 20px; height: 20px; animation: headerPulse 1.5s ease-in-out infinite; filter: drop-shadow(0 0 6px rgba(244,63,94,0.8)); }
+        @keyframes headerPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        .status { font-size: 0.78rem; color: #f59e0b; margin-bottom: 14px; transition: color 0.4s ease; font-weight: 500; }
+        
+        canvas { width: 100%; height: 90px; background: #0d1117; border-radius: 0.75rem; display: block; border: 1px solid #30363d; box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
 
         /* Biological Vital Stats Row */
-        .vital-row { display: flex; gap: 15px; width: 100%; }
-        .vital-box { flex: 1; background: #161b22; border: 1px solid #30363d; padding: 12px; border-radius: 1rem; text-align: center; }
-        .vital-box .val { font-size: 1.1rem; font-weight: bold; color: #5ccfe6; }
-        .vital-box .lbl { font-size: 0.7rem; color: #8b949e; text-transform: uppercase; margin-top: 2px; }
+        .vital-row { display: flex; gap: 12px; width: 100%; }
+        .vital-box { flex: 1; background: #161b22; border: 1px solid #30363d; padding: 12px 8px; border-radius: 1rem; text-align: center; transition: border-color 0.3s ease; }
+        .vital-box .val { font-size: 1.05rem; font-weight: 700; color: #8b949e; transition: color 0.4s ease; }
+        .vital-box .lbl { font-size: 0.65rem; color: #8b949e; text-transform: uppercase; margin-top: 3px; letter-spacing: 0.5px; }
 
         /* 3D Holographic Card */
         .holo-card-container { perspective: 1000px; width: 100%; display: flex; justify-content: center; }
         .holo-card { 
             width: 100%; 
-            height: 210px; 
+            height: 200px; 
             background: #161b22; 
-            border: 1px solid #30363d; 
+            border: 1.5px solid #f43f5e; 
             border-radius: 1.5rem; 
-            padding: 30px; 
+            padding: 25px; 
             display: flex; 
             flex-direction: column; 
             justify-content: center; 
             align-items: center; 
             text-align: center; 
             cursor: pointer; 
-            transition: transform 0.1s ease-out, box-shadow 0.3s ease; 
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4); 
+            transition: transform 0.1s ease-out, box-shadow 0.3s ease, border-color 0.3s ease; 
+            box-shadow: 0 0 20px rgba(244,63,94,0.2); 
             position: relative; 
             overflow: hidden; 
             touch-action: none; 
+            animation: pulseCard 2.5s infinite;
+        }
+
+        @keyframes pulseCard {
+            0%, 100% { border-color: rgba(244,63,94,0.4); box-shadow: 0 0 15px rgba(244,63,94,0.15); }
+            50% { border-color: rgba(244,63,94,0.95); box-shadow: 0 0 28px rgba(244,63,94,0.45); }
         }
         
         .holo-card::after { 
@@ -76,16 +99,16 @@
             left: 0; 
             width: 100%; 
             height: 100%; 
-            background: radial-gradient(circle 160px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(244, 63, 94, 0.28), rgba(217, 119, 6, 0.12) 50%, transparent 80%); 
+            background: radial-gradient(circle 180px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(244, 63, 94, 0.32), rgba(92, 207, 230, 0.15) 50%, transparent 80%); 
             opacity: var(--light-opacity, 0); 
             transition: opacity 0.2s ease; 
             pointer-events: none; 
             z-index: 1;
         }
 
-        .holo-card h4 { font-size: 1.25rem; color: #fff; margin-bottom: 8px; font-weight: 700; z-index: 2; }
-        .holo-card p { color: #8b949e; font-size: 0.9rem; line-height: 1.4; z-index: 2; }
-        .holo-badge { position: absolute; top: 15px; right: 20px; font-size: 0.7rem; background: rgba(244,63,94,0.1); color: #f43f5e; padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(244,63,94,0.3); font-weight: 600; z-index: 2; }
+        .holo-card h4 { font-size: 1.2rem; color: #fff; margin-bottom: 6px; font-weight: 700; z-index: 2; letter-spacing: 0.3px; }
+        .holo-card p { color: #8b949e; font-size: 0.82rem; line-height: 1.4; z-index: 2; }
+        .holo-badge { position: absolute; top: 14px; right: 18px; font-size: 0.68rem; background: rgba(244,63,94,0.12); color: #f43f5e; padding: 3px 10px; border-radius: 20px; border: 1px solid rgba(244,63,94,0.3); font-weight: 600; z-index: 2; }
     </style>
 </head>
 <body>
@@ -93,33 +116,44 @@
     <div class="container">
         <!-- Frequency Visualizer -->
         <div class="visualizer-card">
-            <h3>HEART SYNC FREQUENCY</h3>
-            <div class="status">Status: Bio-Synced • Secure Channel</div>
+            <h3>
+                HEART SYNC FREQUENCY 
+                <svg class="header-shimmer-heart" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="url(#headerHeartGrad)"/>
+                    <defs>
+                        <linearGradient id="headerHeartGrad" x1="2" y1="3" x2="22" y2="21.35" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#ff5864"/>
+                            <stop offset="1" stop-color="#f43f5e"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </h3>
+            <div class="status" id="statusText">Status: Standby • Touch card below to initialize link</div>
             <canvas id="waveCanvas"></canvas>
         </div>
 
         <!-- Biological Vital Stats Box -->
         <div class="vital-row">
-            <div class="vital-box">
-                <div class="val" id="bpmVal">75 BPM</div>
+            <div class="vital-box" id="box1">
+                <div class="val" id="bpmVal">-- BPM</div>
                 <div class="lbl">Heart Rate</div>
             </div>
-            <div class="vital-box">
-                <div class="val">99.9%</div>
+            <div class="vital-box" id="box2">
+                <div class="val" id="resVal">0.0%</div>
                 <div class="lbl">Resonance</div>
             </div>
-            <div class="vital-box">
-                <div class="val">100 Hz</div>
+            <div class="vital-box" id="box3">
+                <div class="val" id="freqVal">0 Hz</div>
                 <div class="lbl">Frequency</div>
             </div>
         </div>
 
-        <!-- 3D Holographic Tilt Card -->
+        <!-- 3D Holographic Card -->
         <div class="holo-card-container">
             <div class="holo-card" id="tiltCard">
-                <span class="holo-badge">Holographic Memory</span>
+                <span class="holo-badge">Quantum Entanglement</span>
                 <h4>Our Special Connection</h4>
-                <p>Touch and drag or move your mouse over this card to experience the 3D holographic tilt and light effect!</p>
+                <p id="cardInstruction">Touch and drag here to bridge Cores and activate field telemetry.</p>
             </div>
         </div>
     </div>
@@ -133,19 +167,33 @@
             }
         });
 
-        // Wave Visualizer Script
         const canvas = document.getElementById('waveCanvas');
         const ctx = canvas.getContext('2d');
         
         function initCanvas() {
-            canvas.width = canvas.parentElement.clientWidth - 50;
+            canvas.width = canvas.parentElement.clientWidth - 48;
             canvas.height = 90;
         }
         window.addEventListener('resize', initCanvas);
         initCanvas();
 
         let step = 0;
-        function drawWave() {
+        let isConnected = false;
+
+        // Draw flat line initially before connection
+        function drawInitialWave() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.lineWidth = 1.5;
+            ctx.strokeStyle = '#30363d';
+            ctx.moveTo(0, canvas.height / 2);
+            ctx.lineTo(canvas.width, canvas.height / 2);
+            ctx.stroke();
+        }
+        drawInitialWave();
+
+        function drawActiveWave() {
+            if (!isConnected) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.beginPath();
             ctx.lineWidth = 2.5;
@@ -166,19 +214,60 @@
                 x += sliceWidth;
             }
             ctx.stroke();
-            step += 0.08;
-            requestAnimationFrame(drawWave);
+            step += 0.035; 
+            requestAnimationFrame(drawActiveWave);
         }
-        drawWave();
-
-        setInterval(() => {
-            const randomBpm = 72 + Math.floor(Math.random() * 6);
-            document.getElementById('bpmVal').textContent = randomBpm + ' BPM';
-        }, 3000);
 
         const card = document.getElementById('tiltCard');
+        const statusText = document.getElementById('statusText');
+        const bpmVal = document.getElementById('bpmVal');
+        const resVal = document.getElementById('resVal');
+        const freqVal = document.getElementById('freqVal');
+        const cardInstruction = document.getElementById('cardInstruction');
+        const box1 = document.getElementById('box1');
+        const box2 = document.getElementById('box2');
+        const box3 = document.getElementById('box3');
+
+        function triggerConnection() {
+            if (isConnected) return;
+            
+            statusText.style.color = '#f59e0b';
+            statusText.textContent = 'Status: Measuring quantum field... Linking Cores';
+            cardInstruction.textContent = 'Calibrating symmetrical resonance... Hold interaction.';
+
+            setTimeout(() => {
+                isConnected = true;
+                statusText.style.color = '#5ccfe6';
+                statusText.textContent = 'Status: Bio-Synced • Core Connected (Secure)';
+                cardInstruction.textContent = 'Fully Synchronized. Move around to experience holographic tilt.';
+                
+                box1.style.borderColor = '#5ccfe6';
+                box2.style.borderColor = '#5ccfe6';
+                box3.style.borderColor = '#5ccfe6';
+
+                bpmVal.style.color = '#5ccfe6';
+                resVal.style.color = '#5ccfe6';
+                freqVal.style.color = '#5ccfe6';
+                
+                bpmVal.textContent = '75 BPM';
+                resVal.textContent = '99.9%';
+                freqVal.textContent = '100 Hz';
+
+                drawActiveWave();
+
+                setInterval(() => {
+                    if (isConnected) {
+                        const randomBpm = 72 + Math.floor(Math.random() * 6);
+                        bpmVal.textContent = randomBpm + ' BPM';
+                    }
+                }, 3000);
+
+            }, 1800);
+        }
 
         function handleMove(clientX, clientY) {
+            triggerConnection();
+
             const rect = card.getBoundingClientRect();
             const x = clientX - rect.left;
             const y = clientY - rect.top;
@@ -186,8 +275,8 @@
             const centerX = rect.width / 2;
             const centerY = rect.height / 2;
             
-            const rotateX = ((y - centerY) / centerY) * -14;
-            const rotateY = ((x - centerX) / centerX) * 14;
+            const rotateX = ((y - centerY) / centerY) * -12;
+            const rotateY = ((x - centerX) / centerX) * 12;
 
             card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
             card.style.setProperty('--mouse-x', `${x}px`);
@@ -199,6 +288,7 @@
         card.addEventListener('mouseenter', () => card.style.setProperty('--light-opacity', `1`));
         card.addEventListener('touchmove', (e) => { if(e.touches.length > 0) handleMove(e.touches[0].clientX, e.touches[0].clientY); });
         card.addEventListener('touchstart', (e) => { if(e.touches.length > 0) handleMove(e.touches[0].clientX, e.touches[0].clientY); });
+        
         card.addEventListener('mouseleave', () => {
             card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
             card.style.setProperty('--light-opacity', `0`);
