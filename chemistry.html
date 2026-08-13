@@ -40,7 +40,21 @@
         .chamber-atom { width: 38px; height: 38px; background: #1f2937; border: 2px solid #5ccfe6; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; color: #5ccfe6; transition: 0.4s; }
         .equilibrium-arrow { font-size: 1.2rem; color: #f43f5e; font-weight: 800; animation: pulseArrow 1.5s infinite; }
         @keyframes pulseArrow { 0%, 100% { opacity: 0.6; transform: scale(1); } 50% { opacity: 1; transform: scale(1.1); } }
-        .product-badge { background: rgba(244,63,94,0.15); border: 1px solid #f43f5e; padding: 6px 12px; border-radius: 8px; color: #f43f5e; font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; }
+        .product-badge { background: rgba(244,63,94,0.15); border: 1px solid #f43f5e; padding: 6px 14px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        
+        /* Custom Shimmering/Gleaming Heart Styles */
+        .shimmer-heart { width: 26px; height: 26px; animation: shimmerPulse 1.5s ease-in-out infinite; filter: drop-shadow(0 0 8px rgba(244,63,94,0.8)); }
+        @keyframes shimmerPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 6px rgba(244,63,94,0.6)); }
+            50% { transform: scale(1.15); filter: drop-shadow(0 0 12px rgba(244,63,94,1)); }
+        }
+        .sparkle-star { animation: starRotate 3s linear infinite; transform-origin: center; }
+        @keyframes starRotate {
+            0% { transform: rotate(0deg) scale(0.8); opacity: 0.7; }
+            50% { transform: rotate(180deg) scale(1.2); opacity: 1; }
+            100% { transform: rotate(360deg) scale(0.8); opacity: 0.7; }
+        }
+
         .equilibrium-output { margin-top: 10px; font-size: 0.8rem; color: #5ccfe6; font-weight: 600; min-height: 20px; }
 
         /* Classical Style Bottom Info Panel */
@@ -105,7 +119,21 @@
                 <span style="color: #8b949e; font-weight: bold;">+</span>
                 <div class="chamber-atom" id="atomN">N</div>
                 <div class="equilibrium-arrow">⇌</div>
-                <div class="product-badge">💝</div>
+                <div class="product-badge">
+                    <!-- Custom Shimmering/Gleaming Heart SVG -->
+                    <svg class="shimmer-heart" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="url(#heartGradient)"/>
+                        <!-- Sparkle / Shimmer Stars -->
+                        <path class="sparkle-star" d="M18 5L18.5 6.5L20 7L18.5 7.5L18 9L17.5 7.5L16 7L17.5 6.5L18 5Z" fill="#ffffff"/>
+                        <path class="sparkle-star" style="animation-delay: 1.5s;" d="M6 12L6.3 12.8L7.1 13.1L6.3 13.4L6 14.2L5.7 13.4L4.9 13.1L5.7 12.8L6 12Z" fill="#5ccfe6"/>
+                        <defs>
+                            <linearGradient id="heartGradient" x1="2" y1="3" x2="22" y2="21.35" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#ff5864"/>
+                                <stop offset="1" stop-color="#f43f5e"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
             </div>
             <button class="action-btn" onclick="applyEquilibriumStress()">Apply External Stress</button>
             <div class="equilibrium-output" id="equilibriumText">System in perfect dynamic equilibrium (Kc = ∞)</div>
@@ -178,5 +206,4 @@
         }
     </script>
 </body>
-        </html>
-        
+</html>
