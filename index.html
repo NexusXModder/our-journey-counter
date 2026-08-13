@@ -113,7 +113,7 @@
             color: #f43f5e;
         }
 
-        /* Custom Modern Vector Icons replacing plain emojis */
+        /* Custom Modern Vector Icons */
         .nav-icon {
             width: 20px;
             height: 20px;
@@ -170,7 +170,7 @@
 
     <div id="backdrop" class="backdrop" onclick="toggleMenu()"></div>
 
-    <!-- Slide-out Drawer Navigation with Professional Modern Icons & Cybernetic Logic Matrix Added -->
+    <!-- Slide-out Drawer Navigation -->
     <div id="navDrawer" class="nav-drawer">
         <div class="drawer-header">Navigation Tools</div>
         <a href="index.html">
@@ -433,23 +433,23 @@
 
         </div>
 
-        <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <a
-                href="chemistry.html"
-                class="block bg-gray-800 p-5 rounded-xl shadow-lg border border-[#30363d] hover:bg-[#21262d] transition-all duration-300 w-full"
-            >
-             
         <div class="mt-8 pt-4 border-t border-gray-700 text-center">
-
             <p class="text-xs text-gray-500 font-medium tracking-wide">
                 Time is the measure of our growth. Every second counts.
             </p>
-
         </div>
 
     </div>
 
     <script>
+        // Disable Right Click & Inspect Shortcuts
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.ctrlKey && (e.key === 'c' || e.key === 'u' || e.key === 's')) {
+                e.preventDefault();
+            }
+        });
+
         function toggleMenu() {
             const drawer = document.getElementById("navDrawer");
             const backdrop = document.getElementById("backdrop");
@@ -487,7 +487,6 @@
         }
 
         function calculateDuration(start, end) {
-
             let years = end.getFullYear() - start.getFullYear();
             let months = end.getMonth() - start.getMonth();
             let days = end.getDate() - start.getDate();
@@ -512,13 +511,11 @@
 
             if (days < 0) {
                 months--;
-
                 const previousMonthDays = new Date(
                     end.getFullYear(),
                     end.getMonth(),
                     0
                 ).getDate();
-
                 days += previousMonthDays;
             }
 
@@ -538,7 +535,6 @@
         }
 
         function updateCounter() {
-
             const now = new Date();
 
             if (now < START_DATE) {
@@ -549,187 +545,80 @@
                 elements.minutes.textContent = '00';
                 elements.seconds.textContent = '00';
 
-                summaryElements.days.textContent =
-                    '0 Days Together';
-
-                summaryElements.totalTime.textContent =
-                    '0 Hours • 0 Minutes';
-
+                summaryElements.days.textContent = '0 Days Together';
+                summaryElements.totalTime.textContent = '0 Hours • 0 Minutes';
                 return;
             }
 
-            const duration = calculateDuration(
-                START_DATE,
-                now
-            );
+            const duration = calculateDuration(START_DATE, now);
 
-            elements.years.textContent =
-                pad(duration.years);
+            elements.years.textContent = pad(duration.years);
+            elements.months.textContent = pad(duration.months);
+            elements.days.textContent = pad(duration.days);
+            elements.hours.textContent = pad(duration.hours);
+            elements.minutes.textContent = pad(duration.minutes);
+            elements.seconds.textContent = pad(duration.seconds);
 
-            elements.months.textContent =
-                pad(duration.months);
+            const elapsedMilliseconds = now.getTime() - START_DATE.getTime();
+            const totalMinutes = Math.floor(elapsedMilliseconds / 60000);
+            const totalHours = Math.floor(elapsedMilliseconds / 3600000);
+            const totalDays = Math.floor(elapsedMilliseconds / 86400000);
 
-            elements.days.textContent =
-                pad(duration.days);
-
-            elements.hours.textContent =
-                pad(duration.hours);
-
-            elements.minutes.textContent =
-                pad(duration.minutes);
-
-            elements.seconds.textContent =
-                pad(duration.seconds);
-
-            const elapsedMilliseconds =
-                now.getTime() - START_DATE.getTime();
-
-            const totalMinutes =
-                Math.floor(
-                    elapsedMilliseconds / 60000
-                );
-
-            const totalHours =
-                Math.floor(
-                    elapsedMilliseconds / 3600000
-                );
-
-            const totalDays =
-                Math.floor(
-                    elapsedMilliseconds / 86400000
-                );
-
-            summaryElements.days.textContent =
-                totalDays.toLocaleString() +
-                ' Days Together';
-
-            summaryElements.totalTime.textContent =
-                totalHours.toLocaleString() +
-                ' Hours • ' +
-                totalMinutes.toLocaleString() +
-                ' Minutes';
+            summaryElements.days.textContent = totalDays.toLocaleString() + ' Days Together';
+            summaryElements.totalTime.textContent = totalHours.toLocaleString() + ' Hours • ' + totalMinutes.toLocaleString() + ' Minutes';
         }
 
         function getNextAnniversary(now) {
-
             let year = now.getFullYear();
-
-            let anniversary = new Date(
-                year,
-                1,
-                25,
-                0,
-                0,
-                0,
-                0
-            );
+            let anniversary = new Date(year, 1, 25, 0, 0, 0, 0);
 
             if (anniversary <= now) {
-
                 year++;
-
-                anniversary = new Date(
-                    year,
-                    1,
-                    25,
-                    0,
-                    0,
-                    0,
-                    0
-                );
+                anniversary = new Date(year, 1, 25, 0, 0, 0, 0);
             }
 
             return anniversary;
         }
 
         function getOrdinal(number) {
-
-            if (
-                number % 100 >= 11 &&
-                number % 100 <= 13
-            ) {
+            if (number % 100 >= 11 && number % 100 <= 13) {
                 return number + 'th';
             }
-
             if (number % 10 === 1) {
                 return number + 'st';
             }
-
             if (number % 10 === 2) {
                 return number + 'nd';
             }
-
             if (number % 10 === 3) {
                 return number + 'rd';
             }
-
             return number + 'th';
         }
 
         function updateMilestone() {
-
             const now = new Date();
+            const milestone = getNextAnniversary(now);
+            const anniversaryNumber = milestone.getFullYear() - START_DATE.getFullYear();
 
-            const milestone =
-                getNextAnniversary(now);
+            milestoneElements.title.textContent = 'Our ' + getOrdinal(anniversaryNumber) + ' Anniversary';
+            milestoneElements.date.textContent = milestone.toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+            });
 
-            const anniversaryNumber =
-                milestone.getFullYear() -
-                START_DATE.getFullYear();
+            const difference = milestone.getTime() - now.getTime();
+            const totalSeconds = Math.floor(difference / 1000);
+            const days = Math.floor(totalSeconds / 86400);
+            const hours = Math.floor((totalSeconds % 86400) / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
 
-            milestoneElements.title.textContent =
-                'Our ' +
-                getOrdinal(anniversaryNumber) +
-                ' Anniversary';
-
-            milestoneElements.date.textContent =
-                milestone.toLocaleDateString(
-                    'en-US',
-                    {
-                        month: 'long',
-                        day: 'numeric',
-                        year: 'numeric'
-                    }
-                );
-
-            const difference =
-                milestone.getTime() -
-                now.getTime();
-
-            const totalSeconds =
-                Math.floor(
-                    difference / 1000
-                );
-
-            const days =
-                Math.floor(
-                    totalSeconds / 86400
-                );
-
-            const hours =
-                Math.floor(
-                    (totalSeconds % 86400) / 3600
-                );
-
-            const minutes =
-                Math.floor(
-                    (totalSeconds % 3600) / 60
-                );
-
-            const seconds =
-                totalSeconds % 60;
-
-            milestoneElements.days.textContent =
-                pad(days);
-
-            milestoneElements.hours.textContent =
-                pad(hours);
-
-            milestoneElements.minutes.textContent =
-                pad(minutes);
-
-            milestoneElements.seconds.textContent =
-                pad(seconds);
+            milestoneElements.days.textContent = pad(days);
+            milestoneElements.hours.textContent = pad(hours);
+            milestoneElements.minutes.textContent = pad(minutes);
+            milestoneElements.seconds.textContent = pad(seconds);
         }
 
         function updateEverything() {
@@ -738,13 +627,8 @@
         }
 
         updateEverything();
-
-        setInterval(
-            updateEverything,
-            1000
-        );
+        setInterval(updateEverything, 1000);
     </script>
 
 </body>
 </html>
-
